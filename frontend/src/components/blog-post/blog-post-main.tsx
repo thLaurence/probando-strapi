@@ -16,6 +16,8 @@ export const BlogPostMain = () => {
     pageSize: 5,
     pageCount: 1,
   });
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error" | "">("");
 
   const fetchBlogPosts = async (page = pagination.page) => {
     try {
@@ -24,6 +26,8 @@ export const BlogPostMain = () => {
       setPagination(response.data.meta.pagination);
     } catch (error) {
       console.error("Error al obtener blogs:", error);
+      setMessage("Error al cargar los blogs");
+      setMessageType("error");
     }
   };
 
@@ -59,6 +63,13 @@ export const BlogPostMain = () => {
           Crear nuevo blog
         </button>
       </div>
+      <span
+        className={`block mt-2 font-semibold ${
+          messageType === "success" ? "text-green-600" : "text-red-600"
+        }`}
+      >
+        {message}
+      </span>
 
       <div className="w-full max-w-4xl px-6 overflow-x-auto">
         <table className="w-full table-fixed border-separate border-spacing-0 shadow-lg rounded-lg mx-auto">

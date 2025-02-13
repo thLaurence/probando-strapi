@@ -7,6 +7,8 @@ import * as Yup from "yup";
 
 export const AuthorInitialForm = () => {
   const [authors, setAuthors] = useState<AuthorDTO[]>([]);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error" | "">("");
   const router = useRouter();
   const fetchAuthors = async (): Promise<AuthorDTO[]> => {
     try {
@@ -22,6 +24,8 @@ export const AuthorInitialForm = () => {
         email: author.email,
       }));
     } catch (error) {
+      setMessage("Error al obtener autores");
+      setMessageType("error");
       console.error("Error al obtener autores:", error);
       return [];
     }
@@ -75,6 +79,13 @@ export const AuthorInitialForm = () => {
               component="div"
               className="text-red-500 text-sm"
             />
+            <span
+              className={`block mt-2 font-semibold ${
+                messageType === "success" ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {message}
+            </span>
             <button
               type="submit"
               className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
